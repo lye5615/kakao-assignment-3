@@ -124,6 +124,12 @@ a {
   background: var(--primary-hover);
 }
 
+.primary-button:disabled,
+.secondary-button:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
 .secondary-button {
   border-color: var(--line);
   background: var(--surface-subtle);
@@ -271,6 +277,19 @@ a {
 
 .form-actions {
   margin-top: 8px;
+}
+
+.form-message,
+.action-message {
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.action-message {
+  margin-top: 6px;
+  text-align: right;
 }
 
 .loading-state {

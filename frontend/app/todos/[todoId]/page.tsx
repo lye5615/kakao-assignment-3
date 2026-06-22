@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTodo, updateTodo } from "../../actions";
+import { getTodo } from "../../actions";
 import TodoForm from "../_components/TodoForm";
 
 type EditTodoPageProps = {
@@ -21,8 +21,6 @@ export default async function EditTodoPage({ params }: EditTodoPageProps) {
     notFound();
   }
 
-  const updateAction = updateTodo.bind(null, todo.id, todo.is_completed);
-
   return (
     <main className="app-shell narrow">
       <nav className="breadcrumb" aria-label="현재 위치">
@@ -35,11 +33,7 @@ export default async function EditTodoPage({ params }: EditTodoPageProps) {
         <h1>Todo 수정</h1>
         <p>할 일의 내용을 다듬어 저장하세요.</p>
       </header>
-      <TodoForm
-        action={updateAction}
-        defaultText={todo.text}
-        submitLabel="저장"
-      />
+      <TodoForm todo={todo} submitLabel="저장" />
     </main>
   );
 }

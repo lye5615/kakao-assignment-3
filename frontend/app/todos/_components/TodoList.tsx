@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { deleteTodo, toggleTodo } from "../../actions";
 import type { Todo } from "../../types";
+import TodoActions from "./TodoActions";
 
 type TodoListProps = {
   todos: Todo[];
@@ -19,9 +18,6 @@ export default function TodoList({ todos }: TodoListProps) {
   return (
     <ul className="todo-list">
       {todos.map((todo) => {
-        const toggleAction = toggleTodo.bind(null, todo);
-        const deleteAction = deleteTodo.bind(null, todo.id);
-
         return (
           <li className="todo-item" key={todo.id}>
             <div className="todo-content">
@@ -32,24 +28,7 @@ export default function TodoList({ todos }: TodoListProps) {
                 {todo.text}
               </p>
             </div>
-            <div className="todo-actions">
-              <Link className="secondary-button compact" href={`/todos/${todo.id}`}>
-                수정
-              </Link>
-              <form action={toggleAction}>
-                <button
-                  className={todo.is_completed ? "primary-button compact" : "secondary-button compact"}
-                  type="submit"
-                >
-                  {todo.is_completed ? "완료 취소" : "완료"}
-                </button>
-              </form>
-              <form action={deleteAction}>
-                <button className="secondary-button compact" type="submit">
-                  삭제
-                </button>
-              </form>
-            </div>
+            <TodoActions todo={todo} />
           </li>
         );
       })}

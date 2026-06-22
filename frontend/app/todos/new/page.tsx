@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { createTodo } from "../../actions";
 import TodoForm from "../_components/TodoForm";
 
 export default function NewTodoPage() {
@@ -15,7 +14,7 @@ export default function NewTodoPage() {
         <h1>새 Todo</h1>
         <p>지금 해야 할 일을 한 문장으로 기록하세요.</p>
       </header>
-      <TodoForm action={createTodo} submitLabel="추가" />
+      <TodoForm submitLabel="추가" />
     </main>
   );
 }

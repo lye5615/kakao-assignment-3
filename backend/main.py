@@ -107,14 +107,19 @@ def get_todos(
         "all",
         alias="filter",
     ),
+    search: str = Query("", max_length=100),
     database: Session = Depends(get_db),
 ) -> list[Todo]:
     statement = select(Todo).order_by(Todo.id.desc())
+    trimmed_search = search.strip()
 
     if status_filter == "active":
         statement = statement.where(Todo.is_completed.is_(False))
     elif status_filter == "completed":
         statement = statement.where(Todo.is_completed.is_(True))
+
+    if trimmed_search:
+        statement = statement.where(Todo.text.ilike(f"%{trimmed_search}%"))
 
     return list(database.scalars(statement).all())
 

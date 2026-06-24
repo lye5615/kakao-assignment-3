@@ -13,11 +13,18 @@ async function getErrorMessage(response: Response): Promise<string> {
   }
 }
 
-export async function getTodos(filter: TodoFilter = "all"): Promise<Todo[]> {
+export async function getTodos(
+  filter: TodoFilter = "all",
+  search = "",
+): Promise<Todo[]> {
   const query = new URLSearchParams();
 
   if (filter !== "all") {
     query.set("filter", filter);
+  }
+
+  if (search) {
+    query.set("search", search);
   }
 
   const queryString = query.toString();

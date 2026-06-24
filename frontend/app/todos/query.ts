@@ -8,8 +8,26 @@ export function normalizeFilter(value?: string): TodoFilter {
   return "all";
 }
 
-export function buildTodosUrl(filter: TodoFilter): string {
-  return filter === "all" ? "/todos" : `/todos?filter=${filter}`;
+export function normalizeSearch(value?: string): string {
+  return value?.trim().slice(0, 100) ?? "";
+}
+
+export function buildTodosUrl(
+  filter: TodoFilter,
+  search = "",
+): string {
+  const query = new URLSearchParams();
+
+  if (filter !== "all") {
+    query.set("filter", filter);
+  }
+
+  if (search) {
+    query.set("search", search);
+  }
+
+  const queryString = query.toString();
+  return `/todos${queryString ? `?${queryString}` : ""}`;
 }
 
 export function normalizeReturnTo(value?: string): string {

@@ -2,17 +2,23 @@ import Link from "next/link";
 import { getTodos } from "../actions";
 import TodoFilterTabs from "./_components/TodoFilterTabs";
 import TodoList from "./_components/TodoList";
-import { buildTodosUrl, normalizeFilter } from "./query";
+import TodoSearch from "./_components/TodoSearch";
+import {
+  buildTodosUrl,
+  normalizeFilter,
+  normalizeSearch,
+} from "./query";
 
 type TodoPageProps = {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; search?: string }>;
 };
 
 export default async function TodoPage({ searchParams }: TodoPageProps) {
-  const { filter: filterParam } = await searchParams;
+  const { filter: filterParam, search: searchParam } = await searchParams;
   const currentFilter = normalizeFilter(filterParam);
-  const todos = await getTodos(currentFilter);
-  const returnTo = buildTodosUrl(currentFilter);
+  const search = normalizeSearch(searchParam);
+  const todos = await getTodos(currentFilter, search);
+  const returnTo = buildTodosUrl(currentFilter, search);
   const newTodoHref = `/todos/new?returnTo=${encodeURIComponent(returnTo)}`;
 
   return (
@@ -29,7 +35,8 @@ export default async function TodoPage({ searchParams }: TodoPageProps) {
       </header>
 
       <section className="list-section" aria-labelledby="todo-list-title">
-        <TodoFilterTabs currentFilter={currentFilter} />
+        <TodoSearch currentFilter={currentFilter} initialSearch={search} />
+        <TodoFilterTabs currentFilter={currentFilter} search={search} />
         <div className="section-header">
           <h2 id="todo-list-title">할 일</h2>
           <span>{todos.length}개</span>

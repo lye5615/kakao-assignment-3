@@ -10,8 +10,10 @@ const FILTERS: { value: TodoFilter; label: string }[] = [
 
 export default function TodoFilterTabs({
   currentFilter,
+  search,
 }: {
   currentFilter: TodoFilter;
+  search: string;
 }) {
   return (
     <nav className="filter-tabs" aria-label="Todo 상태 필터">
@@ -19,7 +21,7 @@ export default function TodoFilterTabs({
         <Link
           key={filter.value}
           className={filter.value === currentFilter ? "active" : ""}
-          href={buildTodosUrl(filter.value)}
+          href={buildTodosUrl(filter.value, search)}
           aria-current={filter.value === currentFilter ? "page" : undefined}
         >
           {filter.label}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
+import ThemeToggle from "./_components/ThemeToggle";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,17 +19,26 @@ export const metadata: Metadata = {
   description: "Next.js와 FastAPI로 만든 Todo 앱",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const theme =
+    cookieStore.get("todo-theme")?.value === "dark" ? "dark" : "light";
+
   return (
     <html
       lang="ko"
+      data-theme={theme}
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeToggle initialTheme={theme} />
+        {children}
+      </body>
     </html>
   );
 }

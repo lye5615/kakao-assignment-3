@@ -10,6 +10,20 @@
   --muted: #777180;
   --line: #e4e1e9;
   --danger: #c93e4f;
+  --shadow: 0 18px 48px rgb(42 32 63 / 8%);
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --background: #0f0c18;
+  --surface: #181225;
+  --surface-subtle: #241c35;
+  --text: #f8f6ff;
+  --muted: #b9b0ca;
+  --line: rgb(255 255 255 / 18%);
+  --danger: #ff737f;
+  --shadow: 0 20px 56px rgb(0 0 0 / 32%);
+  color-scheme: dark;
 }
 
 * {
@@ -27,6 +41,7 @@ body {
   background: var(--background);
   color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background 180ms ease, color 180ms ease;
 }
 
 button,
@@ -53,6 +68,27 @@ a {
   width: min(100% - 32px, 880px);
   margin: 0 auto;
   padding: 52px 0 72px;
+}
+
+.theme-toggle {
+  position: fixed;
+  z-index: 10;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  font-size: 1.1rem;
+}
+
+.theme-toggle:hover {
+  border-color: var(--primary);
 }
 
 .app-shell.narrow {
@@ -228,6 +264,7 @@ a {
   border-radius: 8px;
   padding: 14px;
   background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .todo-content {
@@ -322,6 +359,11 @@ a {
   box-shadow: 0 0 0 3px rgb(103 43 224 / 14%);
 }
 
+.todo-form textarea::placeholder,
+.search-field input::placeholder {
+  color: var(--muted);
+}
+
 .form-actions {
   margin-top: 8px;
 }
@@ -368,6 +410,12 @@ a {
   .app-shell {
     width: min(100% - 24px, 880px);
     padding-top: 28px;
+  }
+
+  .theme-toggle {
+    position: absolute;
+    top: 14px;
+    right: 14px;
   }
 
   .page-header,

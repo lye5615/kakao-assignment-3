@@ -3,9 +3,10 @@ import TodoActions from "./TodoActions";
 
 type TodoListProps = {
   todos: Todo[];
+  returnTo: string;
 };
 
-export default function TodoList({ todos }: TodoListProps) {
+export default function TodoList({ todos, returnTo }: TodoListProps) {
   if (todos.length === 0) {
     return (
       <div className="empty-state">
@@ -28,7 +29,7 @@ export default function TodoList({ todos }: TodoListProps) {
                 {todo.text}
               </p>
             </div>
-            <TodoActions todo={todo} />
+            <TodoActions todo={todo} returnTo={returnTo} />
           </li>
         );
       })}

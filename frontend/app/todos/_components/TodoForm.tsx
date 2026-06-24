@@ -9,6 +9,7 @@ import type { Todo } from "../../types";
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api";
 
 type TodoFormProps = {
+  returnTo: string;
   todo?: Todo;
   submitLabel: string;
 };
@@ -25,7 +26,11 @@ function getRequestErrorMessage(error: unknown): string {
   return "요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.";
 }
 
-export default function TodoForm({ todo, submitLabel }: TodoFormProps) {
+export default function TodoForm({
+  returnTo,
+  todo,
+  submitLabel,
+}: TodoFormProps) {
   const router = useRouter();
   const [text, setText] = useState(todo?.text ?? "");
   const [message, setMessage] = useState("");
@@ -53,7 +58,7 @@ export default function TodoForm({ todo, submitLabel }: TodoFormProps) {
         await axios.post(`${API_URL}/todos`, { text: trimmedText });
       }
 
-      router.push("/todos");
+      router.push(returnTo);
       router.refresh();
     } catch (error) {
       setMessage(getRequestErrorMessage(error));
@@ -84,7 +89,7 @@ export default function TodoForm({ todo, submitLabel }: TodoFormProps) {
         >
           {isSubmitting ? "처리 중..." : submitLabel}
         </button>
-        <Link className="secondary-button" href="/todos">
+        <Link className="secondary-button" href={returnTo}>
           취소
         </Link>
       </div>

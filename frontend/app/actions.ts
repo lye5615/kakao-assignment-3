@@ -1,6 +1,6 @@
 "use server";
 
-import type { Todo } from "./types";
+import type { Todo, TodoFilter } from "./types";
 
 const BACKEND_URL = process.env.BACKEND_URL ?? "http://127.0.0.1:8000";
 
@@ -13,8 +13,16 @@ async function getErrorMessage(response: Response): Promise<string> {
   }
 }
 
-export async function getTodos(): Promise<Todo[]> {
-  const response = await fetch(`${BACKEND_URL}/todos`, {
+export async function getTodos(filter: TodoFilter = "all"): Promise<Todo[]> {
+  const query = new URLSearchParams();
+
+  if (filter !== "all") {
+    query.set("filter", filter);
+  }
+
+  const queryString = query.toString();
+  const requestUrl = `${BACKEND_URL}/todos${queryString ? `?${queryString}` : ""}`;
+  const response = await fetch(requestUrl, {
     cache: "no-store",
   });
 

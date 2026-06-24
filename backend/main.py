@@ -1,8 +1,9 @@
 import os
 from collections.abc import Generator
+from typing import Literal
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi import Depends, FastAPI, HTTPException, Query, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, field_validator
 from sqlalchemy import Boolean, String, create_engine, select
@@ -101,8 +102,20 @@ def root() -> dict[str, str]:
 
 
 @app.get("/todos", response_model=list[TodoResponse])
-def get_todos(database: Session = Depends(get_db)) -> list[Todo]:
+def get_todos(
+    status_filter: Literal["all", "active", "completed"] = Query(
+        "all",
+        alias="filter",
+    ),
+    database: Session = Depends(get_db),
+) -> list[Todo]:
     statement = select(Todo).order_by(Todo.id.desc())
+
+    if status_filter == "active":
+        statement = statement.where(Todo.is_completed.is_(False))
+    elif status_filter == "completed":
+        statement = statement.where(Todo.is_completed.is_(True))
+
     return list(database.scalars(statement).all())
 
 

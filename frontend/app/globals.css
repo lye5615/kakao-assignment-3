@@ -151,6 +151,29 @@ a {
   padding-top: 22px;
 }
 
+.filter-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.filter-tabs a {
+  display: grid;
+  min-height: 40px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-subtle);
+  font-weight: 700;
+}
+
+.filter-tabs a.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+}
+
 .section-header {
   justify-content: space-between;
   margin-bottom: 14px;

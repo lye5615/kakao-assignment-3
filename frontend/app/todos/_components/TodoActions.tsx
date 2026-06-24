@@ -8,7 +8,13 @@ import type { Todo } from "../../types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "/api";
 
-export default function TodoActions({ todo }: { todo: Todo }) {
+export default function TodoActions({
+  todo,
+  returnTo,
+}: {
+  todo: Todo;
+  returnTo: string;
+}) {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState("");
@@ -48,7 +54,10 @@ export default function TodoActions({ todo }: { todo: Todo }) {
   return (
     <div>
       <div className="todo-actions">
-        <Link className="secondary-button compact" href={`/todos/${todo.id}`}>
+        <Link
+          className="secondary-button compact"
+          href={`/todos/${todo.id}?returnTo=${encodeURIComponent(returnTo)}`}
+        >
           수정
         </Link>
         <button
